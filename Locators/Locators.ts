@@ -50,6 +50,7 @@ class CheckboxLocators {
   get checkAllBtn() { return this.page.getByRole('button', { name: /check all/i }); }
 }
 
+
 class FormLocators {
   constructor(private page: Page) { }
   get firstName() { return this.page.getByPlaceholder('Enter your first name'); }
