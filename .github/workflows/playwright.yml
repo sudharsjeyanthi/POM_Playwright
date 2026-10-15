@@ -62,6 +62,18 @@ jobs:
             exit 1
           fi
 
+      # Pull the previous report's history from the live Pages site so the
+      # Trend / Duration trend / History charts have data to draw.
+      - name: Restore Allure history from previous report
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p allure-results/history
+          BASE="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/history"
+          for f in history.json history-trend.json duration-trend.json categories-trend.json retry-trend.json; do
+            curl -fsSL "$BASE/$f" -o "allure-results/history/$f" || rm -f "allure-results/history/$f"
+          done
+          ls -la allure-results/history
+
       - name: Generate Allure report
         if: ${{ !cancelled() }}
         run: |
