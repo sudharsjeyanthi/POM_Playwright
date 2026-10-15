@@ -1,4 +1,4 @@
-name: Run Tests and Generate Allure Report
+name: Playwright Tests and Allure Report
 
 on:
   push:
@@ -20,12 +20,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Allure Commandline Tool
+        run: npm install -D allure-commandline # Ensures the command line generator is available in CI
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Run tests
+      - name: Run Playwright tests
         run: npx playwright test
-        continue-on-error: true # Ensures report generation runs even if some tests fail
+        continue-on-error: true # Prevents failure exit code from stopping the job
 
       - name: Generate Allure Report
         run: npx allure generate allure-results --clean -o allure-report
